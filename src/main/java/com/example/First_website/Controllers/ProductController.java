@@ -1,9 +1,10 @@
 package com.example.First_website.Controllers;
 
-import com.example.First_website.DB_Entity.ProductEntity;
+import com.example.First_website.DTO.ProductDTO;
 import com.example.First_website.Services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,30 +17,37 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
-    public List<ProductEntity> getAllProducts() {
+    public List<ProductDTO> getAllProducts() {
         return productService.getAllProducts();
     }
 
+    @GetMapping("/search")
+    public List<ProductDTO> getProductsByName(@RequestParam String name) {
+        return productService.getProductsByName(name);
+    }
+
     @GetMapping("/{id}")
-    public ProductEntity getProductById(@PathVariable Long id)
+    public ProductDTO getProductById(@PathVariable Long id)
     {
         return productService.getProductById(id);
     }
 
     @PostMapping
-    public ProductEntity createProduct(@Valid @RequestBody ProductEntity product)
+    public ProductDTO createProduct(@Valid @RequestBody ProductDTO product)
     {
         return productService.saveProduct(product);
     }
 
     @PutMapping("/{id}")
-    public ProductEntity updateProduct(@PathVariable Long id, @RequestBody ProductEntity updatedProduct)
+    public ProductDTO updateProduct(@PathVariable Long id, @RequestBody ProductDTO updatedProduct)
     {
         return productService.updateProduct(id, updatedProduct);
     }
 
-    public void deleteProduct(@PathVariable Long id)
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id)
     {
         productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
     }
 }
