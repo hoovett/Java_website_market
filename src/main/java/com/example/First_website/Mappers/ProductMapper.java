@@ -31,4 +31,13 @@ public class ProductMapper {
         productEntity.setPrice(productDTO.getPrice());
         return productEntity;
     }
+    public void updateEntity(ProductDTO productDTO, ProductEntity productEntity)
+    {
+        if(productDTO == null || productEntity == null)
+            return;
+        if(productDTO.getName() != null)
+            productEntity.setName(productDTO.getName());
+        if(productDTO.getPrice() != null)
+            productEntity.setPrice(productDTO.getPrice());
+    }
 }

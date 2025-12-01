@@ -33,11 +33,15 @@ public class UserService {
         return userMapper.toDTO(userEntity);
     }
 
+    public List<UserDTO> getAllUsers()
+    {
+        return userRepository.findAll().stream().map(userMapper::toDTO).collect(Collectors.toList());
+    }
     public UserDTO getById(Long id)
     {
         return userRepository.findById(id)
                 .map(userMapper::toDTO)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User with this id not found"));
     }
 
     public List<UserDTO> getAllUsersByUsername(String username)
@@ -55,10 +59,7 @@ public class UserService {
         return userRepository.findByEmail(email).stream().map(userMapper::toDTO).toList();
     }
 
-    public List<UserDTO> getAllUsers()
-    {
-        return userRepository.findAll().stream().map(userMapper::toDTO).collect(Collectors.toList());
-    }
+
 
     public void delete(Long id)
     {
@@ -68,14 +69,7 @@ public class UserService {
         }
         userRepository.deleteById(id);
     }
-    
-    /**
-     * Updates an existing user with the provided data
-     * @param id The ID of the user to update
-     * @param updateUserRequestDTO The DTO containing the updated user data
-     * @return The updated user as a DTO
-     * @throws UserNotFoundException if no user is found with the given ID
-     */
+
     public UserDTO updateUser(Long id, UpdateUserRequestDTO updateUserRequestDTO) {
         // Find the existing user or throw an exception if not found
         UserEntity existingUser = userRepository.findById(id)
@@ -90,5 +84,5 @@ public class UserService {
         // Convert to DTO and return
         return userMapper.toDTO(updatedUser);
     }
-    }
 }
+

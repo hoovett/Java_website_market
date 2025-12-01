@@ -1,6 +1,9 @@
 package com.example.First_website.Controllers;
 
 import com.example.First_website.DB_Entity.UserEntity;
+import com.example.First_website.DTO.CreateUserRequestDTO;
+import com.example.First_website.DTO.UpdateUserRequestDTO;
+import com.example.First_website.DTO.UserDTO;
 import com.example.First_website.Services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,64 +24,49 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<UserEntity>> getAllUsers()
+    public List<UserDTO> getAllUsers()
     {
-        return ResponseEntity.ok(userService.getAllUsers());
+        return userService.getAllUsers();
     }
 
     @GetMapping("/searchByName")
-    public ResponseEntity<List<UserEntity>> getAllUsersByName(@RequestParam("username") String username)
+    public List<UserDTO> getAllUsersByName(@RequestParam("username") String username)
     {
-        return ResponseEntity.ok(userService.getAllUsersByUsername(username));
+        return userService.getAllUsersByUsername(username);
     }
 
     @GetMapping("/searchByNameIG")
-    public ResponseEntity<List<UserEntity>> getAllUsersByNameIgnoreCase(@RequestParam("username") String username)
+    public List<UserDTO> getAllUsersByNameIgnoreCase(@RequestParam("username") String username)
     {
-        return ResponseEntity.ok(userService.getAllUsersByUsernameIgnoreCase(username));
+        return userService.getAllUsersByUsernameIgnoreCase(username);
     }
 
     @GetMapping("/searchByEmail")
-    public ResponseEntity<UserEntity> getUserByEmail(@RequestParam("email") String email)
+    public List<UserDTO> getUserByEmail(@RequestParam("email") String email)
     {
-        return userService.getUserByEmail(email)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return userService.getUserByEmail(email);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserEntity> getUserById(@PathVariable Long id)
+    public UserDTO getUserById(@PathVariable Long id)
     {
-        return userService.getById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return userService.getById(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserEntity> updateUser(@PathVariable Long id, @Valid @RequestBody UserEntity userDetails) {
-        return userService.getById(id)
-                .map(existingUser -> {
-                    existingUser.setUsername(userDetails.getUsername());
-                    existingUser.setEmail(userDetails.getEmail());
-                    return ResponseEntity.ok(userService.save(existingUser));
-                })
-                .orElse(ResponseEntity.notFound().build());
+    public UserDTO updateUser(@PathVariable Long id, @Valid @RequestBody UpdateUserRequestDTO userDetails) {
+        return userService.updateUser(id, userDetails);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        return userService.getById(id)
-                .map(user -> {
-                    userService.delete(id);
-                    return ResponseEntity.noContent().<Void>build();
-                })
-                .orElse(ResponseEntity.notFound().build());
+    public void deleteUser(@PathVariable Long id) {
+        userService.delete(id);
     }
 
     @PostMapping
-    public ResponseEntity<UserEntity> createUser(@Valid @RequestBody UserEntity user)
+    public UserDTO createUser(@Valid @RequestBody CreateUserRequestDTO user)
     {
-        return ResponseEntity.ok(userService.save(user));
+        return userService.save(user);
     }
 
 

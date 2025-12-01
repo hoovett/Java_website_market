@@ -30,14 +30,12 @@ public class ProductService {
 
     //Update
     public ProductDTO updateProduct(Long id, ProductDTO updatedProductDto) {
-        ProductEntity product = productRepository.findById(id)
+        ProductEntity productEntity = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + id));
 
-        product.setName(updatedProductDto.getName());
-        product.setPrice(updatedProductDto.getPrice());
-
-        ProductEntity updatedProduct = productRepository.save(product);
-        return productMapper.toDTO(updatedProduct);
+        productMapper.updateEntity(updatedProductDto, productEntity);
+        productEntity = productRepository.save(productEntity);
+        return productMapper.toDTO(productEntity);
     }
 
     public List<ProductDTO> getAllProducts() {
