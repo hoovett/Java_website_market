@@ -4,6 +4,9 @@ import com.example.First_website.DB_Entity.ProductEntity;
 import com.example.First_website.DTO.ProductDTO;
 import org.springframework.stereotype.Component;
 
+//TODO: implement updateEntity method
+
+
 @Component
 public class ProductMapper {
 

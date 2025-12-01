@@ -3,6 +3,7 @@ package com.example.First_website.Controllers;
 import com.example.First_website.DB_Entity.UserEntity;
 import com.example.First_website.Services.UserService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,15 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+//TODO: update UserController to use DTO
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private final UserService userService;
 
-    public UserController(UserService userService)
-    {
-        this.userService = userService;
-    }
+    @Autowired
+    private UserService userService;
 
     @GetMapping
     public ResponseEntity<List<UserEntity>> getAllUsers()
