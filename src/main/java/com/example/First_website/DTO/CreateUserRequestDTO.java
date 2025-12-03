@@ -2,12 +2,14 @@ package com.example.First_website.DTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class CreateUserRequestDTO {
 
     @NotBlank(message = "Username is mandatory")
-    @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
+    @Size(min = 2, max = 30, message = "Username should contain from 2 to 30 symbols")
+    @Pattern(regexp = "^[a-zA-Zа-яА-Я0-9 ]+$", message = "Name should not contain special symbols")
     private String username;
 
     @NotBlank(message = "Email is mandatory")

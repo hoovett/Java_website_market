@@ -28,9 +28,29 @@ public class OrderEntity {
         this.id = id;
     }
 
+    public String getUsername()
+    {
+        return user.getUsername();
+    }
+
+    public UserEntity getUser()
+    {
+        return user;
+    }
+
+    public void setUser(UserEntity user)
+    {
+        this.user = user;
+    }
+
     public String getStatus()
     {
         return status;
+    }
+
+    public void setStatus(String status)
+    {
+        this.status = status;
     }
 
 }

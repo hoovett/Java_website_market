@@ -1,6 +1,8 @@
 package com.example.First_website.Controllers;
 
+import com.example.First_website.DTO.CreateProductDTO;
 import com.example.First_website.DTO.ProductDTO;
+import com.example.First_website.DTO.UpdateProductDTO;
 import com.example.First_website.Services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +35,13 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductDTO createProduct(@Valid @RequestBody ProductDTO product)
+    public ProductDTO createProduct(@Valid @RequestBody CreateProductDTO createdProduct)
     {
-        return productService.saveProduct(product);
+        return productService.saveProduct(createdProduct);
     }
 
     @PutMapping("/{id}")
-    public ProductDTO updateProduct(@PathVariable Long id, @RequestBody ProductDTO updatedProduct)
+    public ProductDTO updateProduct(@PathVariable Long id, @RequestBody UpdateProductDTO updatedProduct)
     {
         return productService.updateProduct(id, updatedProduct);
     }

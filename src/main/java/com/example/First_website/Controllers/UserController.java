@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-//TODO: update UserController to use DTO
 
 @RestController
 @RequestMapping("/users")
@@ -58,16 +57,17 @@ public class UserController {
         return userService.updateUser(id, userDetails);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userService.delete(id);
-    }
-
     @PostMapping
     public UserDTO createUser(@Valid @RequestBody CreateUserRequestDTO user)
     {
         return userService.save(user);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        userService.delete(id);
+    }
+
 
 
 }

@@ -1,7 +1,9 @@
 package com.example.First_website.Services;
 
 import com.example.First_website.DB_Entity.ProductEntity;
+import com.example.First_website.DTO.CreateProductDTO;
 import com.example.First_website.DTO.ProductDTO;
+import com.example.First_website.DTO.UpdateProductDTO;
 import com.example.First_website.Exceptions.ResourceNotFoundException;
 import com.example.First_website.Mappers.ProductMapper;
 import com.example.First_website.Repository.ProductRepository;
@@ -10,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//TODO: implement updateProduct method
 
 @Service
 public class ProductService {
@@ -22,14 +23,14 @@ public class ProductService {
         this.productMapper = productMapper;
     }
 
-    public ProductDTO saveProduct(ProductDTO productDTO) {
+    public ProductDTO saveProduct(CreateProductDTO productDTO) {
         ProductEntity productEntity = productMapper.toEntity(productDTO);
         productEntity = productRepository.save(productEntity);
         return productMapper.toDTO(productEntity);
     }
 
     //Update
-    public ProductDTO updateProduct(Long id, ProductDTO updatedProductDto) {
+    public ProductDTO updateProduct(Long id, UpdateProductDTO updatedProductDto) {
         ProductEntity productEntity = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + id));
 

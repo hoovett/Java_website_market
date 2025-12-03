@@ -15,7 +15,7 @@ public class ProductEntity {
     @Pattern(regexp = "^[a-zA-Zа-яА-Я0-9 ]+$", message = "Name should not contain special symbols")
     private String name;
 
-    @NotNull(message = "Price is obligated")
+    @NotNull(message = "Price is mandatory")
     @Positive(message = "Price should be positive")
     private Double price;
 

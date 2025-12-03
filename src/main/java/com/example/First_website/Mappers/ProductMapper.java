@@ -1,10 +1,11 @@
 package com.example.First_website.Mappers;
 
 import com.example.First_website.DB_Entity.ProductEntity;
+import com.example.First_website.DTO.CreateProductDTO;
 import com.example.First_website.DTO.ProductDTO;
+import com.example.First_website.DTO.UpdateProductDTO;
 import org.springframework.stereotype.Component;
 
-//TODO: implement updateEntity method
 
 
 @Component
@@ -21,17 +22,16 @@ public class ProductMapper {
         );
     }
 
-    public ProductEntity toEntity(ProductDTO productDTO) {
+    public ProductEntity toEntity(CreateProductDTO productDTO) {
         if (productDTO == null) {
             return null;
         }
         ProductEntity productEntity = new ProductEntity();
-        productEntity.setId(productDTO.getId());
         productEntity.setName(productDTO.getName());
         productEntity.setPrice(productDTO.getPrice());
         return productEntity;
     }
-    public void updateEntity(ProductDTO productDTO, ProductEntity productEntity)
+    public void updateEntity(UpdateProductDTO productDTO, ProductEntity productEntity)
     {
         if(productDTO == null || productEntity == null)
             return;
