@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
                 HttpStatus.NOT_FOUND.getReasonPhrase(),
-                "Resource not found",
+                ex.getMessage(),
                 request.getRequestURI()
         );
 

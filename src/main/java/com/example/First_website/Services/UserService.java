@@ -11,6 +11,7 @@ import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,16 +28,19 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
+    @Transactional
     public UserDTO save(CreateUserRequestDTO newUser)
     {
         UserEntity userEntity = userRepository.save(userMapper.toEntity(newUser));
         return userMapper.toDTO(userEntity);
     }
 
+    @Transactional(readOnly = true)
     public List<UserDTO> getAllUsers()
     {
         return userRepository.findAll().stream().map(userMapper::toDTO).collect(Collectors.toList());
     }
+    @Transactional(readOnly = true)
     public UserDTO getById(Long id)
     {
         return userRepository.findById(id)
@@ -44,16 +48,19 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User with this id not found"));
     }
 
+    @Transactional(readOnly = true)
     public List<UserDTO> getAllUsersByUsername(String username)
     {
         return userRepository.findByUsername(username).stream().map(userMapper::toDTO).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<UserDTO> getAllUsersByUsernameIgnoreCase(String username)
     {
         return userRepository.findByUsernameContainingIgnoreCase(username).stream().map(userMapper::toDTO).toList();
     }
 
+    @Transactional(readOnly = true)
     public List<UserDTO> getUserByEmail(String email)
     {
         return userRepository.findByEmail(email).stream().map(userMapper::toDTO).toList();
@@ -61,6 +68,7 @@ public class UserService {
 
 
 
+    @Transactional
     public void delete(Long id)
     {
         // Check if user exists before deleting
@@ -70,6 +78,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    @Transactional
     public UserDTO updateUser(Long id, UpdateUserRequestDTO updateUserRequestDTO) {
         // Find the existing user or throw an exception if not found
         UserEntity existingUser = userRepository.findById(id)

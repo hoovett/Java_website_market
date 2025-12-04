@@ -8,10 +8,10 @@ import com.example.First_website.Exceptions.ResourceNotFoundException;
 import com.example.First_website.Mappers.ProductMapper;
 import com.example.First_website.Repository.ProductRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 @Service
 public class ProductService {
@@ -23,6 +23,7 @@ public class ProductService {
         this.productMapper = productMapper;
     }
 
+    @Transactional
     public ProductDTO saveProduct(CreateProductDTO productDTO) {
         ProductEntity productEntity = productMapper.toEntity(productDTO);
         productEntity = productRepository.save(productEntity);
@@ -30,6 +31,7 @@ public class ProductService {
     }
 
     //Update
+    @Transactional
     public ProductDTO updateProduct(Long id, UpdateProductDTO updatedProductDto) {
         ProductEntity productEntity = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + id));
@@ -39,6 +41,7 @@ public class ProductService {
         return productMapper.toDTO(productEntity);
     }
 
+    @Transactional(readOnly = true)
     public List<ProductDTO> getAllProducts() {
         return productRepository.findAll()
                 .stream()
@@ -46,6 +49,7 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<ProductDTO> getProductsByName(String name) {
         return productRepository.findByName(name)
                 .stream()
@@ -53,12 +57,14 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public ProductDTO getProductById(Long id) {
         return productRepository.findById(id)
                 .map(productMapper::toDTO)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + id));
     }
 
+    @Transactional
     public void deleteProduct(Long id)
     {
         productRepository.deleteById(id);
