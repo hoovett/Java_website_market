@@ -2,11 +2,9 @@ package com.example.First_website.Controllers;
 
 import com.example.First_website.DTO.CreateOrderDTO;
 import com.example.First_website.DTO.OrderDTO;
-import com.example.First_website.DTO.UpdateOrderDTO;
 import com.example.First_website.Services.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,13 +46,6 @@ public class OrderController {
     @PostMapping
     public OrderDTO createOrder(@Valid @RequestBody CreateOrderDTO createOrderDTO) {
         return orderService.createOrder(createOrderDTO);
-    }
-
-    @PutMapping("/{id}")
-    public OrderDTO updateOrder(
-            @PathVariable Long id,
-            @Valid @RequestBody UpdateOrderDTO updateOrderDTO) {
-        return orderService.updateOrder(id, updateOrderDTO);
     }
 
     @DeleteMapping("/{id}")

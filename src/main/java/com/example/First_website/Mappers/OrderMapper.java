@@ -4,7 +4,6 @@ import com.example.First_website.DB_Entity.OrderEntity;
 import com.example.First_website.DB_Entity.UserEntity;
 import com.example.First_website.DTO.CreateOrderDTO;
 import com.example.First_website.DTO.OrderDTO;
-import com.example.First_website.DTO.UpdateOrderDTO;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,12 +13,14 @@ public class OrderMapper {
         if (orderEntity == null) {
             return null;
         }
-        return new OrderDTO(
+        OrderDTO orderDTO = new OrderDTO(
                 orderEntity.getId(),
                 orderEntity.getStatus(),
                 orderEntity.getUser().getId(),
-                orderEntity.getUser().getUsername() // Assuming UserEntity has getUsername()
+                orderEntity.getUser().getUsername(),
+                orderEntity.getTotalPrice()  // Add total price from entity
         );
+        return orderDTO;
     }
 
     public OrderEntity toEntity(CreateOrderDTO orderDTO, UserEntity userEntity) {
@@ -32,13 +33,4 @@ public class OrderMapper {
         return orderEntity;
     }
 
-    public void updateEntity(UpdateOrderDTO orderDTO, OrderEntity orderEntity) {
-        if (orderDTO == null || orderEntity == null) {
-            return;
-        }
-        if (orderDTO.hasStatus()) {
-            orderEntity.setStatus(orderDTO.getStatus());
-        }
-        // User cannot be updated through order update
-    }
 }

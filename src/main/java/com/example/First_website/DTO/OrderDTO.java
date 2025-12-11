@@ -5,15 +5,17 @@ public class OrderDTO {
     private String status;
     private Long userId;
     private String userName;
+    private Double totalPrice;
 
     public OrderDTO() {
     }
 
-    public OrderDTO(Long id, String status, Long userId, String userName) {
+    public OrderDTO(Long id, String status, Long userId, String userName, Double totalPrice) {
         this.id = id;
         this.status = status;
         this.userId = userId;
         this.userName = userName;
+        this.totalPrice = totalPrice;
     }
 
     public Long getId() {
@@ -44,4 +46,11 @@ public class OrderDTO {
         return userName;
     }
 
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 }

@@ -4,7 +4,6 @@ import com.example.First_website.DB_Entity.OrderEntity;
 import com.example.First_website.DB_Entity.UserEntity;
 import com.example.First_website.DTO.CreateOrderDTO;
 import com.example.First_website.DTO.OrderDTO;
-import com.example.First_website.DTO.UpdateOrderDTO;
 import com.example.First_website.Exceptions.ResourceNotFoundException;
 import com.example.First_website.Mappers.OrderMapper;
 import com.example.First_website.Repository.OrderRepository;
@@ -78,17 +77,6 @@ public class OrderService {
                 .stream()
                 .map(orderMapper::toDTO)
                 .collect(Collectors.toList());
-    }
-
-    @Transactional
-    public OrderDTO updateOrder(Long id, UpdateOrderDTO updateOrderDTO) {
-        OrderEntity orderEntity = orderRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Order not found with id " + id));
-        
-        orderMapper.updateEntity(updateOrderDTO, orderEntity);
-        orderEntity = orderRepository.save(orderEntity);
-        
-        return orderMapper.toDTO(orderEntity);
     }
 
     @Transactional
