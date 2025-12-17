@@ -4,6 +4,8 @@ import com.example.First_website.DB_Entity.OrderEntity;
 import com.example.First_website.DB_Entity.UserEntity;
 import com.example.First_website.DTO.CreateOrderDTO;
 import com.example.First_website.DTO.OrderDTO;
+import com.example.First_website.DTO.OrderItemDTO;
+import com.example.First_website.DTO.UpdateOrderDTO;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,7 +20,18 @@ public class OrderMapper {
                 orderEntity.getStatus(),
                 orderEntity.getUser().getId(),
                 orderEntity.getUser().getUsername(),
-                orderEntity.getTotalPrice()  // Add total price from entity
+                orderEntity.getTotalPrice(),
+                orderEntity.getItems().stream()
+                .map(item -> new OrderItemDTO(
+                        item.getId(),
+                        item.getOrder().getId(),
+                        item.getProduct(),
+                        item.getQuantity(),
+                        item.getPriceAtPurchase()
+                ))
+                .toList()
+
+
         );
         return orderDTO;
     }
@@ -28,9 +41,13 @@ public class OrderMapper {
             return null;
         }
         OrderEntity orderEntity = new OrderEntity();
-        orderEntity.setStatus(orderDTO.getStatus());
+        orderEntity.setStatus("NEW");
         orderEntity.setUser(userEntity);
         return orderEntity;
+    }
+
+    public void updateStatus(OrderEntity order, UpdateOrderDTO dto) {
+        order.setStatus(dto.getStatus());
     }
 
 }

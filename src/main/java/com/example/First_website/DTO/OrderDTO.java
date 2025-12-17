@@ -1,21 +1,25 @@
 package com.example.First_website.DTO;
 
+import java.util.List;
+
 public class OrderDTO {
     private Long id;
     private String status;
     private Long userId;
     private String userName;
     private Double totalPrice;
+    private List<OrderItemDTO> items;
 
     public OrderDTO() {
     }
 
-    public OrderDTO(Long id, String status, Long userId, String userName, Double totalPrice) {
+    public OrderDTO(Long id, String status, Long userId, String userName, Double totalPrice, List<OrderItemDTO> items) {
         this.id = id;
         this.status = status;
         this.userId = userId;
         this.userName = userName;
         this.totalPrice = totalPrice;
+        this.items = items;
     }
 
     public Long getId() {
@@ -52,5 +56,9 @@ public class OrderDTO {
 
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public List<OrderItemDTO> getItems() {
+        return items;
     }
 }
