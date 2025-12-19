@@ -7,6 +7,7 @@ import com.example.First_website.DB_Entity.UserEntity;
 import com.example.First_website.DTO.CreateOrderDTO;
 import com.example.First_website.DTO.CreateOrderItemDTO;
 import com.example.First_website.DTO.OrderDTO;
+import com.example.First_website.DTO.UpdateOrderDTO;
 import com.example.First_website.Exceptions.ResourceNotFoundException;
 import com.example.First_website.Exceptions.UserNotFoundException;
 import com.example.First_website.Mappers.OrderItemMapper;
@@ -65,5 +66,37 @@ public class OrderService {
     //===========
     //UpdateORDER
     //===========
-    public OrderDTO updateOrderStatus(Long )
+    public OrderDTO updateOrderStatus(Long orderId, UpdateOrderDTO updatedOrderDTO)
+    {
+        OrderEntity orderEntity = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order with this Id not found"));
+
+        orderMapper.updateStatus(orderEntity, updatedOrderDTO);
+
+        return orderMapper.toDTO(orderEntity);
+    }
+
+    //============
+    //GET ORDER BY ID
+    //===========
+    @Transactional(readOnly = true)
+    public OrderDTO getOrderById(Long orderId)
+    {
+     OrderEntity orderEntity = orderRepository.findById(orderId)
+             .orElseThrow(() -> new ResourceNotFoundException("Order with this Id not found"));
+
+     return orderMapper.toDTO(orderEntity);
+    }
+
+    //=============
+    //GET ALL ORDERS
+    //=============
+    @Transactional(readOnly = true)
+    public List<OrderDTO> getAllOrders()
+    {
+        return orderRepository.findAll()
+                .stream()
+                .map(orderMapper::toDTO)
+                .toList();
+    }
 }
