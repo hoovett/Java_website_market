@@ -99,4 +99,17 @@ public class OrderService {
                 .map(orderMapper::toDTO)
                 .toList();
     }
+
+    @Transactional(readOnly = true)
+    public  List<OrderDTO> getOrdersByUser(Long userId)
+    {
+        return orderRepository.findByUserId(userId)
+                .stream().map(orderMapper::toDTO)
+                .toList();
+    }
+
+    public void deleteOrder(Long orderId)
+    {
+        orderRepository.deleteById(orderId);
+    }
 }
