@@ -15,6 +15,8 @@ import com.example.First_website.Mappers.OrderMapper;
 import com.example.First_website.Repository.OrderRepository;
 import com.example.First_website.Repository.ProductRepository;
 import com.example.First_website.Repository.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +48,8 @@ public class OrderService {
 
    //Create Order
     public OrderDTO createOrder(CreateOrderDTO createOrderDTO) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user = userRepository.findById(createOrderDTO.getUserId())
                 .orElseThrow(() -> new UserNotFoundException("User with this ID not found"));
 

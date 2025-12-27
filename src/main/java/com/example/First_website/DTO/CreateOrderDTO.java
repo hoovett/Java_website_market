@@ -13,9 +13,6 @@ public class CreateOrderDTO {
     @Pattern(regexp = "^[a-zA-Zа-яА-Я0-9 ]+$", message = "Status should not contain special symbols")
     private String status;
     
-    @NotNull(message = "User ID is required")
-    private final Long userId;
-    
     @Valid
     @NotNull(message = "Order items are required")
     private List<CreateOrderItemDTO> items = new ArrayList<>();

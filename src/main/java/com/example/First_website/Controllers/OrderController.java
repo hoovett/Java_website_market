@@ -24,6 +24,11 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    @PostMapping
+    public OrderDTO createOrder(@Valid @RequestBody CreateOrderDTO createOrderDTO) {
+        return orderService.createOrder(createOrderDTO);
+    }
+
     @GetMapping("/{id}")
     public OrderDTO getOrderById(@PathVariable Long id)
     {
