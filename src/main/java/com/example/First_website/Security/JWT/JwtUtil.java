@@ -13,10 +13,20 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "secretKey";
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10;
+    // Use a secure, random key with at least 256 bits (32 bytes)
+    private static final String SECRET_KEY = "your-256-bit-secret-key-must-be-at-least-32-characters-long";
+    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 hours
 
-    private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    private final Key key;
+
+    public JwtUtil() {
+        // Ensure the key is properly initialized with sufficient length
+        byte[] keyBytes = SECRET_KEY.getBytes();
+        if (keyBytes.length * 8 < 256) { // Check if key is at least 256 bits (32 bytes)
+            throw new IllegalStateException("JWT key must be at least 256 bits (32 characters) long");
+        }
+        this.key = Keys.hmacShaKeyFor(keyBytes);
+    }
 
     public String generateToken(String username)
     {
@@ -51,6 +61,10 @@ public class JwtUtil {
     private <T> T extractClaim(String token, Function<Claims, T> resolver) {
         Claims claims = extractAllClaims(token);
         return resolver.apply(claims);
+    }
+
+    public String extractRole(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
     }
 
     private Claims extractAllClaims(String token) {

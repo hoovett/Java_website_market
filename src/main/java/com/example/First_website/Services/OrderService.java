@@ -15,6 +15,7 @@ import com.example.First_website.Mappers.OrderMapper;
 import com.example.First_website.Repository.OrderRepository;
 import com.example.First_website.Repository.ProductRepository;
 import com.example.First_website.Repository.UserRepository;
+import com.example.First_website.Security.User.UserPrincipal;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -48,11 +49,15 @@ public class OrderService {
 
    //Create Order
     public OrderDTO createOrder(CreateOrderDTO createOrderDTO) {
-
+        // Get the currently authenticated user
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserEntity user = userRepository.findById(createOrderDTO.getUserId())
-                .orElseThrow(() -> new UserNotFoundException("User with this ID not found"));
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        
+        // Get user from database using the username (email) from the security context
+        UserEntity user = userRepository.findByEmail(userPrincipal.getUsername())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
+        // Create order with the authenticated user
         OrderEntity orderEntity = orderMapper.toEntity(createOrderDTO, user);
 
         for (CreateOrderItemDTO itemDTO : createOrderDTO.getItems())

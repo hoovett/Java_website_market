@@ -17,14 +17,12 @@ public class CreateOrderDTO {
     @NotNull(message = "Order items are required")
     private List<CreateOrderItemDTO> items = new ArrayList<>();
 
-    public CreateOrderDTO(String status, Long userId) {
+    public CreateOrderDTO(String status) {
         this.status = status;
-        this.userId = userId;
     }
     
-    public CreateOrderDTO(String status, Long userId, List<CreateOrderItemDTO> items) {
+    public CreateOrderDTO(String status, List<CreateOrderItemDTO> items) {
         this.status = status;
-        this.userId = userId;
         this.items = items != null ? new ArrayList<>(items) : new ArrayList<>();
     }
 
@@ -35,10 +33,6 @@ public class CreateOrderDTO {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public Long getUserId() {
-        return userId;
     }
     
     public List<CreateOrderItemDTO> getItems() {

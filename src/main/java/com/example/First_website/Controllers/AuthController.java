@@ -2,6 +2,7 @@ package com.example.First_website.Controllers;
 
 import com.example.First_website.DTO.LoginRequestDTO;
 import com.example.First_website.DTO.LoginResponseDTO;
+import com.example.First_website.Security.User.UserPrincipal;
 import com.example.First_website.Services.JwtService;
 import jakarta.validation.Valid;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,17 +26,22 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public LoginResponseDTO login(@RequestBody @Valid LoginRequestDTO loginRequestDTO)
-    {
+    public LoginResponseDTO login(@RequestBody @Valid LoginRequestDTO loginRequestDTO) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequestDTO.getEmail(),
                         loginRequestDTO.getPassword()
                 )
         );
-        String token = jwtService.generateToken(authentication.getName());
+        
+        // Get the authenticated user's details
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        
+        // Generate token with UserPrincipal
+        String token = jwtService.generateToken(userPrincipal);
+        
         return new LoginResponseDTO(token);
-    };
+    }
 
 
 }

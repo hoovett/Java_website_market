@@ -1,5 +1,6 @@
 package com.example.First_website.Services;
 
+import com.example.First_website.Security.User.UserPrincipal;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,11 @@ public class JwtService {
     private static final String SECRET_KEY = "secretKey";
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10;
 
-    public String generateToken(String username)
+    public String generateToken(UserPrincipal user)
     {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(user.getUsername())
+                .claim("role", user.getAuthorities().iterator().next().getAuthority())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
